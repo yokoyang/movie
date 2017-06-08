@@ -76,7 +76,6 @@ namespace WebAPI.Controllers
                 result = _userService.ChargeMoney(User.Identity.Name, amount);
             }
             info.Add("result", result.ToString());
-
             return Json(info);
         }
 
