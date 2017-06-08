@@ -12,15 +12,12 @@ namespace DataModel
     using System;
     using System.Collections.Generic;
     
-    public partial class movie
+    public partial class token
     {
-        public long movie_id { get; set; }
-        public string asin { get; set; }
-        public float score { get; set; }
-        public Nullable<int> time_id { get; set; }
-        public string title { get; set; }
-        public Nullable<decimal> movie_money { get; set; }
-        public string pic_url { get; set; }
-        public Nullable<int> amount { get; set; }
+        public int token_id { get; set; }
+        public Nullable<int> user_id { get; set; }
+        public string auth_token { get; set; }
+        public Nullable<System.DateTime> issueed_on { get; set; }
+        public Nullable<System.DateTime> expire_on { get; set; }
     }
 }

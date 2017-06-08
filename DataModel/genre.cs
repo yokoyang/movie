@@ -17,7 +17,7 @@ namespace DataModel
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public genre()
         {
-            this.movie = new HashSet<movie>();
+            this.movie_genre = new HashSet<movie_genre>();
         }
     
         public long genre_id { get; set; }
@@ -25,6 +25,6 @@ namespace DataModel
         public int genre_num { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<movie> movie { get; set; }
+        public virtual ICollection<movie_genre> movie_genre { get; set; }
     }
 }

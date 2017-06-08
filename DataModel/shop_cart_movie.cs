@@ -15,11 +15,12 @@ namespace DataModel
     public partial class shop_cart_movie
     {
         public int iduseraccount { get; set; }
-        public long idmovie { get; set; }
+        public int idmovie { get; set; }
         public Nullable<int> amount { get; set; }
-        public Nullable<int> type { get; set; }
+        public Nullable<System.DateTime> shop_time { get; set; }
+        public long idshop_cart_movie { get; set; }
+        public Nullable<int> state { get; set; }
     
-        public virtual movie movie { get; set; }
         public virtual net_user net_user { get; set; }
     }
 }

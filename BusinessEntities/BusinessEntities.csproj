@@ -105,8 +105,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdminEntity.cs" />
+    <Compile Include="ConcessionEntity.cs" />
+    <Compile Include="ConcessionResultInfo.cs" />
+    <Compile Include="GenreEntity.cs" />
     <Compile Include="MovieEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PublishConcessionEntity.cs" />
+    <Compile Include="ShopCartEntity.cs" />
+    <Compile Include="ShopMovieEntity.cs" />
     <Compile Include="UserEntity.cs" />
   </ItemGroup>
   <ItemGroup>

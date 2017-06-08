@@ -12,15 +12,11 @@ namespace DataModel
     using System;
     using System.Collections.Generic;
     
-    public partial class movie
+    public partial class movie_genre
     {
+        public long genre_id { get; set; }
         public long movie_id { get; set; }
-        public string asin { get; set; }
-        public float score { get; set; }
-        public Nullable<int> time_id { get; set; }
-        public string title { get; set; }
-        public Nullable<decimal> movie_money { get; set; }
-        public string pic_url { get; set; }
-        public Nullable<int> amount { get; set; }
+    
+        public virtual genre genre { get; set; }
     }
 }

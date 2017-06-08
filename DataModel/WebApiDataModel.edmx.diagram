@@ -4,21 +4,22 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="d33978f00093480fb4e6b85af186db81" Name="Diagram1">
-        <EntityTypeShape EntityType="WebApiDbModel.concession" Width="1.5" PointX="5.25" PointY="3.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebApiDbModel.concession_record" Width="1.5" PointX="7.5" PointY="3.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebApiDbModel.genre" Width="1.5" PointX="0.75" PointY="3.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebApiDbModel.movie" Width="1.5" PointX="3" PointY="3.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebApiDbModel.movie_admin" Width="1.5" PointX="0.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebApiDbModel.net_user" Width="1.5" PointX="6" PointY="7.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebApiDbModel.picture" Width="1.5" PointX="2.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebApiDbModel.shop_cart_movie" Width="1.5" PointX="8.25" PointY="0.75" IsExpanded="true" />
-        <AssociationConnector Association="WebApiDbModel.idconcession" ManuallyRouted="false" />
-        <AssociationConnector Association="WebApiDbModel.idmoive" ManuallyRouted="false" />
-        <AssociationConnector Association="WebApiDbModel.iduser_accoun" ManuallyRouted="false" />
-        <AssociationConnector Association="WebApiDbModel.idmovie" ManuallyRouted="false" />
+      <Diagram DiagramId="54eea329f198458c9d4011448df5a9b4" Name="Diagram1">
+        <EntityTypeShape EntityType="WebApiDbModel.admin" Width="1.5" PointX="5.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebApiDbModel.concession" Width="1.5" PointX="0.75" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebApiDbModel.concession_record" Width="1.5" PointX="3" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebApiDbModel.genre" Width="1.5" PointX="5.75" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebApiDbModel.movie" Width="1.5" PointX="5.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebApiDbModel.movie_admin" Width="1.5" PointX="7.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebApiDbModel.movie_genre" Width="1.5" PointX="8" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebApiDbModel.net_user" Width="1.5" PointX="0.75" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebApiDbModel.picture" Width="1.5" PointX="7.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebApiDbModel.shop_cart_movie" Width="1.5" PointX="3" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebApiDbModel.token" Width="1.5" PointX="2.75" PointY="8.75" IsExpanded="true" />
+        <AssociationConnector Association="WebApiDbModel.concession_record1" ManuallyRouted="false" />
+        <AssociationConnector Association="WebApiDbModel.iduser_account" ManuallyRouted="false" />
+        <AssociationConnector Association="WebApiDbModel.genre_id" ManuallyRouted="false" />
         <AssociationConnector Association="WebApiDbModel.iduseraccount" ManuallyRouted="false" />
-        <AssociationConnector Association="WebApiDbModel.movie_genre" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

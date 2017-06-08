@@ -25,13 +25,16 @@ namespace DataModel
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<admin> admin { get; set; }
         public virtual DbSet<concession> concession { get; set; }
         public virtual DbSet<concession_record> concession_record { get; set; }
         public virtual DbSet<genre> genre { get; set; }
         public virtual DbSet<movie> movie { get; set; }
         public virtual DbSet<movie_admin> movie_admin { get; set; }
+        public virtual DbSet<movie_genre> movie_genre { get; set; }
         public virtual DbSet<net_user> net_user { get; set; }
         public virtual DbSet<picture> picture { get; set; }
         public virtual DbSet<shop_cart_movie> shop_cart_movie { get; set; }
+        public virtual DbSet<token> token { get; set; }
     }
 }

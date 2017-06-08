@@ -25,6 +25,8 @@ namespace DataModel
         public string user_name { get; set; }
         public string email { get; set; }
         public Nullable<decimal> money { get; set; }
+        public string user_password { get; set; }
+        public string tel_num { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<concession_record> concession_record { get; set; }

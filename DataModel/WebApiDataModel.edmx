@@ -5,17 +5,25 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="WebApiDbModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.7" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="admin">
+          <Key>
+            <PropertyRef Name="idadmin" />
+          </Key>
+          <Property Name="idadmin" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="admin_name" Type="varchar" MaxLength="85" Nullable="false" />
+          <Property Name="admin_password" Type="varchar" MaxLength="85" Nullable="false" />
+        </EntityType>
         <EntityType Name="concession">
           <Key>
             <PropertyRef Name="idconcession" />
           </Key>
-          <Property Name="idconcession" Type="int" Nullable="false" />
-          <Property Name="amount" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="idconcession" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="amount" Type="int" Nullable="false" />
           <Property Name="start_time" Type="datetime" Precision="6" Nullable="false" />
           <Property Name="end_time" Type="datetime" Precision="6" Nullable="false" />
           <Property Name="idmoive" Type="bigint" Nullable="false" />
-          <Property Name="status" Type="int" Nullable="false" />
-          <Property Name="price" Type="int" Nullable="false" />
+          <Property Name="price" Type="decimal" Precision="6" Scale="0" Nullable="false" />
+          <Property Name="concession_name" Type="varchar" MaxLength="185" />
         </EntityType>
         <EntityType Name="concession_record">
           <Key>
@@ -38,18 +46,20 @@
           <Key>
             <PropertyRef Name="movie_id" />
           </Key>
-          <Property Name="movie_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="movie_id" Type="bigint" Nullable="false" />
           <Property Name="asin" Type="varchar" MaxLength="1000" Nullable="false" />
           <Property Name="score" Type="float" Nullable="false" />
           <Property Name="time_id" Type="int" />
           <Property Name="title" Type="varchar" MaxLength="1000" />
           <Property Name="movie_money" Type="decimal" Precision="6" Scale="2" />
+          <Property Name="pic_url" Type="varchar" MaxLength="95" />
+          <Property Name="amount" Type="int" />
         </EntityType>
         <EntityType Name="movie_admin">
           <Key>
             <PropertyRef Name="idmovie_admin" />
           </Key>
-          <Property Name="idmovie_admin" Type="int" Nullable="false" />
+          <Property Name="idmovie_admin" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="admin_pwd" Type="varchar" MaxLength="45" Nullable="false" />
           <Property Name="admin_name" Type="varchar" MaxLength="75" Nullable="false" />
         </EntityType>
@@ -65,10 +75,12 @@
           <Key>
             <PropertyRef Name="iduser_account" />
           </Key>
-          <Property Name="iduser_account" Type="int" Nullable="false" />
+          <Property Name="iduser_account" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="user_name" Type="varchar" MaxLength="45" />
           <Property Name="email" Type="varchar" MaxLength="45" />
           <Property Name="money" Type="decimal" Precision="6" Scale="2" />
+          <Property Name="user_password" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="tel_num" Type="varchar" MaxLength="45" />
         </EntityType>
         <EntityType Name="picture">
           <Key>
@@ -79,14 +91,37 @@
         </EntityType>
         <EntityType Name="shop_cart_movie">
           <Key>
-            <PropertyRef Name="iduseraccount" />
-            <PropertyRef Name="idmovie" />
+            <PropertyRef Name="idshop_cart_movie" />
           </Key>
           <Property Name="iduseraccount" Type="int" Nullable="false" />
-          <Property Name="idmovie" Type="bigint" Nullable="false" />
+          <Property Name="idmovie" Type="int" Nullable="false" />
           <Property Name="amount" Type="int" />
-          <Property Name="type" Type="int" />
+          <Property Name="shop_time" Type="datetime" Precision="0" />
+          <Property Name="idshop_cart_movie" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="state" Type="int" />
         </EntityType>
+        <EntityType Name="token">
+          <Key>
+            <PropertyRef Name="token_id" />
+          </Key>
+          <Property Name="token_id" Type="int" Nullable="false" />
+          <Property Name="user_id" Type="int" />
+          <Property Name="auth_token" Type="varchar" MaxLength="445" />
+          <Property Name="issueed_on" Type="datetime" Precision="6" />
+          <Property Name="expire_on" Type="datetime" Precision="6" />
+        </EntityType>
+        <Association Name="concession_record1">
+          <End Role="concession" Type="Self.concession" Multiplicity="1" />
+          <End Role="concession_record" Type="Self.concession_record" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="concession">
+              <PropertyRef Name="idconcession" />
+            </Principal>
+            <Dependent Role="concession_record">
+              <PropertyRef Name="idconcession" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="genre_id">
           <End Role="genre" Type="Self.genre" Multiplicity="1" />
           <End Role="movie_genre" Type="Self.movie_genre" Multiplicity="*" />
@@ -99,43 +134,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="idconcession">
-          <End Role="concession" Type="Self.concession" Multiplicity="1" />
-          <End Role="concession_record" Type="Self.concession_record" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="concession">
-              <PropertyRef Name="idconcession" />
-            </Principal>
-            <Dependent Role="concession_record">
-              <PropertyRef Name="idconcession" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="idmoive">
-          <End Role="movie" Type="Self.movie" Multiplicity="1" />
-          <End Role="concession" Type="Self.concession" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="movie">
-              <PropertyRef Name="movie_id" />
-            </Principal>
-            <Dependent Role="concession">
-              <PropertyRef Name="idmoive" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="idmovie">
-          <End Role="movie" Type="Self.movie" Multiplicity="1" />
-          <End Role="shop_cart_movie" Type="Self.shop_cart_movie" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="movie">
-              <PropertyRef Name="movie_id" />
-            </Principal>
-            <Dependent Role="shop_cart_movie">
-              <PropertyRef Name="idmovie" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="iduser_accoun">
+        <Association Name="iduser_account">
           <End Role="net_user" Type="Self.net_user" Multiplicity="1" />
           <End Role="concession_record" Type="Self.concession_record" Multiplicity="*" />
           <ReferentialConstraint>
@@ -159,19 +158,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="movie_id">
-          <End Role="movie" Type="Self.movie" Multiplicity="1" />
-          <End Role="movie_genre" Type="Self.movie_genre" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="movie">
-              <PropertyRef Name="movie_id" />
-            </Principal>
-            <Dependent Role="movie_genre">
-              <PropertyRef Name="movie_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="WebApiDbModelStoreContainer">
+          <EntitySet Name="admin" EntityType="Self.admin" Schema="datawarehouse" store:Type="Tables" />
           <EntitySet Name="concession" EntityType="Self.concession" Schema="datawarehouse" store:Type="Tables" />
           <EntitySet Name="concession_record" EntityType="Self.concession_record" Schema="datawarehouse" store:Type="Tables" />
           <EntitySet Name="genre" EntityType="Self.genre" Schema="datawarehouse" store:Type="Tables" />
@@ -181,23 +169,16 @@
           <EntitySet Name="net_user" EntityType="Self.net_user" Schema="datawarehouse" store:Type="Tables" />
           <EntitySet Name="picture" EntityType="Self.picture" Schema="datawarehouse" store:Type="Tables" />
           <EntitySet Name="shop_cart_movie" EntityType="Self.shop_cart_movie" Schema="datawarehouse" store:Type="Tables" />
+          <EntitySet Name="token" EntityType="Self.token" Schema="datawarehouse" store:Type="Tables" />
+          <AssociationSet Name="concession_record1" Association="Self.concession_record1">
+            <End Role="concession" EntitySet="concession" />
+            <End Role="concession_record" EntitySet="concession_record" />
+          </AssociationSet>
           <AssociationSet Name="genre_id" Association="Self.genre_id">
             <End Role="genre" EntitySet="genre" />
             <End Role="movie_genre" EntitySet="movie_genre" />
           </AssociationSet>
-          <AssociationSet Name="idconcession" Association="Self.idconcession">
-            <End Role="concession" EntitySet="concession" />
-            <End Role="concession_record" EntitySet="concession_record" />
-          </AssociationSet>
-          <AssociationSet Name="idmoive" Association="Self.idmoive">
-            <End Role="movie" EntitySet="movie" />
-            <End Role="concession" EntitySet="concession" />
-          </AssociationSet>
-          <AssociationSet Name="idmovie" Association="Self.idmovie">
-            <End Role="movie" EntitySet="movie" />
-            <End Role="shop_cart_movie" EntitySet="shop_cart_movie" />
-          </AssociationSet>
-          <AssociationSet Name="iduser_accoun" Association="Self.iduser_accoun">
+          <AssociationSet Name="iduser_account" Association="Self.iduser_account">
             <End Role="net_user" EntitySet="net_user" />
             <End Role="concession_record" EntitySet="concession_record" />
           </AssociationSet>
@@ -205,29 +186,32 @@
             <End Role="net_user" EntitySet="net_user" />
             <End Role="shop_cart_movie" EntitySet="shop_cart_movie" />
           </AssociationSet>
-          <AssociationSet Name="movie_id" Association="Self.movie_id">
-            <End Role="movie" EntitySet="movie" />
-            <End Role="movie_genre" EntitySet="movie_genre" />
-          </AssociationSet>
         </EntityContainer>
       </Schema>
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="WebApiDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="admin">
+          <Key>
+            <PropertyRef Name="idadmin" />
+          </Key>
+          <Property Name="idadmin" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="admin_name" Type="String" MaxLength="85" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="admin_password" Type="String" MaxLength="85" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
         <EntityType Name="concession">
           <Key>
             <PropertyRef Name="idconcession" />
           </Key>
-          <Property Name="idconcession" Type="Int32" Nullable="false" />
-          <Property Name="amount" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="idconcession" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="amount" Type="Int32" Nullable="false" />
           <Property Name="start_time" Type="DateTime" Nullable="false" />
           <Property Name="end_time" Type="DateTime" Nullable="false" />
           <Property Name="idmoive" Type="Int64" Nullable="false" />
-          <Property Name="status" Type="Int32" Nullable="false" />
-          <Property Name="price" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="concession_record" Relationship="Self.idconcession" FromRole="concession" ToRole="concession_record" />
-          <NavigationProperty Name="movie" Relationship="Self.idmoive" FromRole="concession" ToRole="movie" />
+          <Property Name="price" Type="Decimal" Nullable="false" />
+          <Property Name="concession_name" Type="String" MaxLength="185" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="concession_record" Relationship="Self.concession_record1" FromRole="concession" ToRole="concession_record" />
         </EntityType>
         <EntityType Name="concession_record">
           <Key>
@@ -237,8 +221,8 @@
           <Property Name="idconcession" Type="Int32" Nullable="false" />
           <Property Name="iduser_account" Type="Int32" Nullable="false" />
           <Property Name="state" Type="Int32" />
-          <NavigationProperty Name="concession" Relationship="Self.idconcession" FromRole="concession_record" ToRole="concession" />
-          <NavigationProperty Name="net_user" Relationship="Self.iduser_accoun" FromRole="concession_record" ToRole="net_user" />
+          <NavigationProperty Name="concession" Relationship="Self.concession_record1" FromRole="concession_record" ToRole="concession" />
+          <NavigationProperty Name="net_user" Relationship="Self.iduser_account" FromRole="concession_record" ToRole="net_user" />
         </EntityType>
         <EntityType Name="genre">
           <Key>
@@ -247,39 +231,49 @@
           <Property Name="genre_id" Type="Int64" Nullable="false" />
           <Property Name="genre_name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="genre_num" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="movie" Relationship="Self.movie_genre" FromRole="genre" ToRole="movie" />
+          <NavigationProperty Name="movie_genre" Relationship="Self.genre_id" FromRole="genre" ToRole="movie_genre" />
         </EntityType>
         <EntityType Name="movie">
           <Key>
             <PropertyRef Name="movie_id" />
           </Key>
-          <Property Name="movie_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="movie_id" Type="Int64" Nullable="false" />
           <Property Name="asin" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="score" Type="Single" Nullable="false" />
           <Property Name="time_id" Type="Int32" />
           <Property Name="title" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
           <Property Name="movie_money" Type="Decimal" />
-          <NavigationProperty Name="concession" Relationship="Self.idmoive" FromRole="movie" ToRole="concession" />
-          <NavigationProperty Name="shop_cart_movie" Relationship="Self.idmovie" FromRole="movie" ToRole="shop_cart_movie" />
-          <NavigationProperty Name="genre" Relationship="Self.movie_genre" FromRole="movie" ToRole="genre" />
+          <Property Name="pic_url" Type="String" MaxLength="95" FixedLength="false" Unicode="false" />
+          <Property Name="amount" Type="Int32" />
         </EntityType>
         <EntityType Name="movie_admin">
           <Key>
             <PropertyRef Name="idmovie_admin" />
           </Key>
-          <Property Name="idmovie_admin" Type="Int32" Nullable="false" />
+          <Property Name="idmovie_admin" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="admin_pwd" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="admin_name" Type="String" MaxLength="75" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="movie_genre">
+          <Key>
+            <PropertyRef Name="genre_id" />
+            <PropertyRef Name="movie_id" />
+          </Key>
+          <Property Name="genre_id" Type="Int64" Nullable="false" />
+          <Property Name="movie_id" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="genre" Relationship="Self.genre_id" FromRole="movie_genre" ToRole="genre" />
         </EntityType>
         <EntityType Name="net_user">
           <Key>
             <PropertyRef Name="iduser_account" />
           </Key>
-          <Property Name="iduser_account" Type="Int32" Nullable="false" />
+          <Property Name="iduser_account" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="user_name" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="email" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="money" Type="Decimal" />
-          <NavigationProperty Name="concession_record" Relationship="Self.iduser_accoun" FromRole="net_user" ToRole="concession_record" />
+          <Property Name="user_password" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="tel_num" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="concession_record" Relationship="Self.iduser_account" FromRole="net_user" ToRole="concession_record" />
           <NavigationProperty Name="shop_cart_movie" Relationship="Self.iduseraccount" FromRole="net_user" ToRole="shop_cart_movie" />
         </EntityType>
         <EntityType Name="picture">
@@ -291,17 +285,27 @@
         </EntityType>
         <EntityType Name="shop_cart_movie">
           <Key>
-            <PropertyRef Name="iduseraccount" />
-            <PropertyRef Name="idmovie" />
+            <PropertyRef Name="idshop_cart_movie" />
           </Key>
           <Property Name="iduseraccount" Type="Int32" Nullable="false" />
-          <Property Name="idmovie" Type="Int64" Nullable="false" />
+          <Property Name="idmovie" Type="Int32" Nullable="false" />
           <Property Name="amount" Type="Int32" />
-          <Property Name="type" Type="Int32" />
-          <NavigationProperty Name="movie" Relationship="Self.idmovie" FromRole="shop_cart_movie" ToRole="movie" />
+          <Property Name="shop_time" Type="DateTime" />
+          <Property Name="idshop_cart_movie" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="state" Type="Int32" />
           <NavigationProperty Name="net_user" Relationship="Self.iduseraccount" FromRole="shop_cart_movie" ToRole="net_user" />
         </EntityType>
-        <Association Name="idconcession">
+        <EntityType Name="token">
+          <Key>
+            <PropertyRef Name="token_id" />
+          </Key>
+          <Property Name="token_id" Type="Int32" Nullable="false" />
+          <Property Name="user_id" Type="Int32" />
+          <Property Name="auth_token" Type="String" MaxLength="445" FixedLength="false" Unicode="false" />
+          <Property Name="issueed_on" Type="DateTime" />
+          <Property Name="expire_on" Type="DateTime" />
+        </EntityType>
+        <Association Name="concession_record1">
           <End Role="concession" Type="Self.concession" Multiplicity="1" />
           <End Role="concession_record" Type="Self.concession_record" Multiplicity="*" />
           <ReferentialConstraint>
@@ -313,19 +317,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="idmoive">
-          <End Role="movie" Type="Self.movie" Multiplicity="1" />
-          <End Role="concession" Type="Self.concession" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="movie">
-              <PropertyRef Name="movie_id" />
-            </Principal>
-            <Dependent Role="concession">
-              <PropertyRef Name="idmoive" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="iduser_accoun">
+        <Association Name="iduser_account">
           <End Role="net_user" Type="Self.net_user" Multiplicity="1" />
           <End Role="concession_record" Type="Self.concession_record" Multiplicity="*" />
           <ReferentialConstraint>
@@ -337,15 +329,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="idmovie">
-          <End Role="movie" Type="Self.movie" Multiplicity="1" />
-          <End Role="shop_cart_movie" Type="Self.shop_cart_movie" Multiplicity="*" />
+        <Association Name="genre_id">
+          <End Role="genre" Type="Self.genre" Multiplicity="1" />
+          <End Role="movie_genre" Type="Self.movie_genre" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="movie">
-              <PropertyRef Name="movie_id" />
+            <Principal Role="genre">
+              <PropertyRef Name="genre_id" />
             </Principal>
-            <Dependent Role="shop_cart_movie">
-              <PropertyRef Name="idmovie" />
+            <Dependent Role="movie_genre">
+              <PropertyRef Name="genre_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -361,42 +353,33 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="movie_genre">
-          <End Role="genre" Type="Self.genre" Multiplicity="*" />
-          <End Role="movie" Type="Self.movie" Multiplicity="*" />
-        </Association>
         <EntityContainer Name="WebApiDbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="admin" EntityType="Self.admin" />
           <EntitySet Name="concession" EntityType="Self.concession" />
           <EntitySet Name="concession_record" EntityType="Self.concession_record" />
           <EntitySet Name="genre" EntityType="Self.genre" />
           <EntitySet Name="movie" EntityType="Self.movie" />
           <EntitySet Name="movie_admin" EntityType="Self.movie_admin" />
+          <EntitySet Name="movie_genre" EntityType="Self.movie_genre" />
           <EntitySet Name="net_user" EntityType="Self.net_user" />
           <EntitySet Name="picture" EntityType="Self.picture" />
           <EntitySet Name="shop_cart_movie" EntityType="Self.shop_cart_movie" />
-          <AssociationSet Name="idconcession" Association="Self.idconcession">
+          <EntitySet Name="token" EntityType="Self.token" />
+          <AssociationSet Name="concession_record1" Association="Self.concession_record1">
             <End Role="concession" EntitySet="concession" />
             <End Role="concession_record" EntitySet="concession_record" />
           </AssociationSet>
-          <AssociationSet Name="idmoive" Association="Self.idmoive">
-            <End Role="movie" EntitySet="movie" />
-            <End Role="concession" EntitySet="concession" />
-          </AssociationSet>
-          <AssociationSet Name="iduser_accoun" Association="Self.iduser_accoun">
+          <AssociationSet Name="iduser_account" Association="Self.iduser_account">
             <End Role="net_user" EntitySet="net_user" />
             <End Role="concession_record" EntitySet="concession_record" />
           </AssociationSet>
-          <AssociationSet Name="idmovie" Association="Self.idmovie">
-            <End Role="movie" EntitySet="movie" />
-            <End Role="shop_cart_movie" EntitySet="shop_cart_movie" />
+          <AssociationSet Name="genre_id" Association="Self.genre_id">
+            <End Role="genre" EntitySet="genre" />
+            <End Role="movie_genre" EntitySet="movie_genre" />
           </AssociationSet>
           <AssociationSet Name="iduseraccount" Association="Self.iduseraccount">
             <End Role="net_user" EntitySet="net_user" />
             <End Role="shop_cart_movie" EntitySet="shop_cart_movie" />
-          </AssociationSet>
-          <AssociationSet Name="movie_genre" Association="Self.movie_genre">
-            <End Role="genre" EntitySet="genre" />
-            <End Role="movie" EntitySet="movie" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -405,6 +388,15 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="WebApiDbModelStoreContainer" CdmEntityContainer="WebApiDbEntities">
+          <EntitySetMapping Name="admin">
+            <EntityTypeMapping TypeName="WebApiDbModel.admin">
+              <MappingFragment StoreEntitySet="admin">
+                <ScalarProperty Name="idadmin" ColumnName="idadmin" />
+                <ScalarProperty Name="admin_name" ColumnName="admin_name" />
+                <ScalarProperty Name="admin_password" ColumnName="admin_password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="concession">
             <EntityTypeMapping TypeName="WebApiDbModel.concession">
               <MappingFragment StoreEntitySet="concession">
@@ -413,8 +405,8 @@
                 <ScalarProperty Name="start_time" ColumnName="start_time" />
                 <ScalarProperty Name="end_time" ColumnName="end_time" />
                 <ScalarProperty Name="idmoive" ColumnName="idmoive" />
-                <ScalarProperty Name="status" ColumnName="status" />
                 <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="concession_name" ColumnName="concession_name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -445,6 +437,8 @@
                 <ScalarProperty Name="time_id" ColumnName="time_id" />
                 <ScalarProperty Name="title" ColumnName="title" />
                 <ScalarProperty Name="movie_money" ColumnName="movie_money" />
+                <ScalarProperty Name="pic_url" ColumnName="pic_url" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -457,6 +451,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="movie_genre">
+            <EntityTypeMapping TypeName="WebApiDbModel.movie_genre">
+              <MappingFragment StoreEntitySet="movie_genre">
+                <ScalarProperty Name="genre_id" ColumnName="genre_id" />
+                <ScalarProperty Name="movie_id" ColumnName="movie_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="net_user">
             <EntityTypeMapping TypeName="WebApiDbModel.net_user">
               <MappingFragment StoreEntitySet="net_user">
@@ -464,6 +466,8 @@
                 <ScalarProperty Name="user_name" ColumnName="user_name" />
                 <ScalarProperty Name="email" ColumnName="email" />
                 <ScalarProperty Name="money" ColumnName="money" />
+                <ScalarProperty Name="user_password" ColumnName="user_password" />
+                <ScalarProperty Name="tel_num" ColumnName="tel_num" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -481,18 +485,23 @@
                 <ScalarProperty Name="iduseraccount" ColumnName="iduseraccount" />
                 <ScalarProperty Name="idmovie" ColumnName="idmovie" />
                 <ScalarProperty Name="amount" ColumnName="amount" />
-                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="shop_time" ColumnName="shop_time" />
+                <ScalarProperty Name="idshop_cart_movie" ColumnName="idshop_cart_movie" />
+                <ScalarProperty Name="state" ColumnName="state" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="movie_genre" TypeName="WebApiDbModel.movie_genre" StoreEntitySet="movie_genre">
-            <EndProperty Name="genre">
-              <ScalarProperty Name="genre_id" ColumnName="genre_id" />
-            </EndProperty>
-            <EndProperty Name="movie">
-              <ScalarProperty Name="movie_id" ColumnName="movie_id" />
-            </EndProperty>
-          </AssociationSetMapping>
+          <EntitySetMapping Name="token">
+            <EntityTypeMapping TypeName="WebApiDbModel.token">
+              <MappingFragment StoreEntitySet="token">
+                <ScalarProperty Name="token_id" ColumnName="token_id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="auth_token" ColumnName="auth_token" />
+                <ScalarProperty Name="issueed_on" ColumnName="issueed_on" />
+                <ScalarProperty Name="expire_on" ColumnName="expire_on" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

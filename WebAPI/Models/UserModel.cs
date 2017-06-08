@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Newtonsoft.Json;
+using System.Linq;
+using System.Web;
 
 namespace WebAPI.Models
 {
-    public class RegisterBindingModel
+    public class UserModel
     {
         [Required]
-        [Display(Name = "UserName")]
+        [Display(Name = "User name")]
         public string UserName { get; set; }
 
         [Required]
@@ -20,10 +22,5 @@ namespace WebAPI.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
-
-        [DataType(DataType.PhoneNumber)]
-        [Display(Name = "电话号码")]
-        [StringLength(11, MinimumLength = 11)]
-        public string PhoneNumber { get; set; }
     }
 }

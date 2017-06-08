@@ -17,6 +17,8 @@ namespace DataModel.UnitOfWork
         #region Private member variables...
 
         private WebApiDbEntities _context = null;
+        private AuthRepository _authRepository;
+
         private GenericRepository<concession> _concessionRepository;
         private GenericRepository<concession_record> _concessionRecordRepository;
         private GenericRepository<genre> _genreRepository;
@@ -25,6 +27,7 @@ namespace DataModel.UnitOfWork
         private GenericRepository<net_user> _netUserRepository;
         private GenericRepository<picture> _pictureRepository;
         private GenericRepository<shop_cart_movie> _shopCartMovieRepository;
+        private GenericRepository<admin> _adminRepository;
 
         #endregion
 
@@ -54,7 +57,17 @@ namespace DataModel.UnitOfWork
                 return _concessionRecordRepository;
             }
         }
+        public AuthRepository AuthRepository
+        {
+            get
+            {
+                if (null == _authRepository)
+                    _authRepository = new AuthRepository();
+                return _authRepository;
+            }
 
+            set { _authRepository = value; }
+        }
 
         public GenericRepository<genre> GenreRepository
         {
@@ -117,6 +130,15 @@ namespace DataModel.UnitOfWork
             }
         }
 
+        public GenericRepository<admin> AdminRepository
+        {
+            get
+            {
+                if (this._adminRepository == null)
+                    this._adminRepository = new GenericRepository<admin>(_context);
+                return _adminRepository;
+            }
+        }
         #endregion
 
         #region Public member methods...

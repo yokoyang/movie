@@ -14,5 +14,13 @@ namespace BusinessServices
         long CreateMovie(MovieEntity movieEntity);
         bool UpdateMovie(long movieId, MovieEntity movieEntity);
         bool DeleteMovie(long movieId);
+        List<MovieEntity> GetMovieByName(string movieName, int page);
+        List<MovieEntity> GetMovieByType(int moiveType, int page);
+
+        //得到所有的类型
+        List<GenreEntity> GetAllType();
+
+        //名字+类型
+        List<MovieEntity> MoiveNameType(int moiveType, string moiveName, int page);
     }
 }
